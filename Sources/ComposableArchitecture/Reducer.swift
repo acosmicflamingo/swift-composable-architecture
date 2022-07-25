@@ -30,8 +30,8 @@ public struct Reducer<State, Action, Environment> {
   /// For example:
   ///
   /// ```swift
-  /// struct MyState { var count = 0, text = "" }
-  /// enum MyAction { case buttonTapped, textChanged(String) }
+  /// struct MyState: Equatable { var count = 0, text = "" }
+  /// enum MyAction: Equatable { case buttonTapped, textChanged(String) }
   /// struct MyEnvironment { var analyticsClient: AnalyticsClient }
   ///
   /// let myReducer = Reducer<MyState, MyAction, MyEnvironment> { state, action, environment in
@@ -49,6 +49,8 @@ public struct Reducer<State, Action, Environment> {
   ///
   /// - Parameter reducer: A function signature that takes state, action and
   ///   environment.
+  ///
+  /// Instantiating a reducer requires State and Action generics to conform to Equatable protocol
   public init(_ reducer: @escaping (inout State, Action, Environment) -> Effect<Action, Never>) {
     self.reducer = reducer
   }
