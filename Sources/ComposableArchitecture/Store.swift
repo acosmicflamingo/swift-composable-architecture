@@ -140,6 +140,7 @@ public final class Store<State, Action> {
   var parentCancellable: AnyCancellable?
   private let reducer: any Reducer<State, Action>
   @_spi(Internals) public var stateSubject: CurrentValueSubject<State, Never>
+  var statePassthroughSubject: PassthroughSubject<State, Never>
   #if DEBUG
     private let mainThreadChecksEnabled: Bool
   #endif
@@ -510,6 +511,7 @@ public final class Store<State, Action> {
         self.bufferedActions.removeAll()
       }
       self.stateSubject.value = currentState
+      self.statePassthroughSubject.send(currentState)
       self.isSending = false
       if !self.bufferedActions.isEmpty {
         if let task = self.send(
@@ -724,6 +726,7 @@ public final class Store<State, Action> {
     mainThreadChecksEnabled: Bool
   ) where R.State == State, R.Action == Action {
     self.stateSubject = CurrentValueSubject(initialState)
+    self.statePassthroughSubject = PassthroughSubject()
     self.reducer = reducer
     #if DEBUG
       self.mainThreadChecksEnabled = mainThreadChecksEnabled
@@ -741,7 +744,7 @@ public final class Store<State, Action> {
   ///   .sink { ... }
   /// ```
   public var publisher: StorePublisher<State> {
-    StorePublisher(store: self, upstream: self.stateSubject)
+    StorePublisher(store: self, upstream: self.statePassthroughSubject)
   }
 
   private struct Scope<ChildState, ChildAction>: Hashable {
@@ -1089,6 +1092,7 @@ extension ScopedStoreReducer: AnyScopedStoreReducer {
           return
         }
         childStore.stateSubject.value = childState
+        childStore.statePassthroughSubject.send(childState)
         Logger.shared.log("\(storeTypeName(of: store)).scope")
       }
     if let id = id {
