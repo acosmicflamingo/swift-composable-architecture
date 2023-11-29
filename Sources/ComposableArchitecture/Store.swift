@@ -511,7 +511,7 @@ public final class Store<State, Action> {
         self.bufferedActions.removeAll()
       }
       self.stateSubject.value = currentState
-      self.statePassthroughSubject.send(currentState)
+      // self.statePassthroughSubject.send(currentState)
       self.isSending = false
       if !self.bufferedActions.isEmpty {
         if let task = self.send(
