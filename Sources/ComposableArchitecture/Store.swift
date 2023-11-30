@@ -140,6 +140,7 @@ public final class Store<State, Action> {
   var parentCancellable: AnyCancellable?
   private let reducer: any Reducer<State, Action>
   @_spi(Internals) public var stateSubject: CurrentValueSubject<State, Never>
+  var stateDownstreamSubject: PassthroughSubject<State, Never>
   #if DEBUG
     private let mainThreadChecksEnabled: Bool
   #endif
@@ -509,6 +510,7 @@ public final class Store<State, Action> {
       withExtendedLifetime(self.bufferedActions) {
         self.bufferedActions.removeAll()
       }
+      self.stateDownstreamSubject.send(currentState)
       self.stateSubject.value = currentState
       self.isSending = false
       if !self.bufferedActions.isEmpty {
@@ -724,6 +726,7 @@ public final class Store<State, Action> {
     mainThreadChecksEnabled: Bool
   ) where R.State == State, R.Action == Action {
     self.stateSubject = CurrentValueSubject(initialState)
+    self.stateDownstreamSubject = PassthroughSubject()
     self.reducer = reducer
     #if DEBUG
       self.mainThreadChecksEnabled = mainThreadChecksEnabled
@@ -1067,8 +1070,7 @@ extension ScopedStoreReducer: AnyScopedStoreReducer {
       reducer
     }
     childStore._isInvalidated = isInvalid
-    childStore.parentCancellable = store.stateSubject
-      .dropFirst()
+    childStore.parentCancellable = store.stateDownstreamSubject
       .sink { [weak store, weak childStore] state in
         guard
           !reducer.isSending,
@@ -1088,6 +1090,8 @@ extension ScopedStoreReducer: AnyScopedStoreReducer {
         guard isDuplicate.map({ !$0(childStore.stateSubject.value, childState) }) ?? true else {
           return
         }
+
+        childStore.stateDownstreamSubject.send(childState)
         childStore.stateSubject.value = childState
         Logger.shared.log("\(storeTypeName(of: store)).scope")
       }
