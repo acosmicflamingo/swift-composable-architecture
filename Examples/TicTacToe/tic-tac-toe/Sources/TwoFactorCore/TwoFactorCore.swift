@@ -57,16 +57,17 @@ public struct TwoFactor: Sendable {
         return .none
 
       case .view(.submitButtonTapped):
-        state.isTwoFactorRequestInFlight = true
-        return .run { [code = state.code, token = state.token] send in
-          await send(
-            .twoFactorResponse(
-              await Result {
-                try await self.authenticationClient.twoFactor(code: code, token: token)
-              }
-            )
-          )
-        }
+        return .none
+//        state.isTwoFactorRequestInFlight = true
+//        return .run { [code = state.code, token = state.token] send in
+//          await send(
+//            .twoFactorResponse(
+//              await Result {
+//                try await self.authenticationClient.twoFactor(code: code, token: token)
+//              }
+//            )
+//          )
+//        }
       }
     }
     .ifLet(\.$alert, action: \.alert)

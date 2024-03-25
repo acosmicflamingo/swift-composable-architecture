@@ -55,6 +55,10 @@ public struct Login: Sendable {
         state.isLoginRequestInFlight = false
         return .none
 
+      case .twoFactor(.presented(.view(.submitButtonTapped))):
+        state.twoFactor = nil
+        return .none
+
       case .twoFactor:
         return .none
 
