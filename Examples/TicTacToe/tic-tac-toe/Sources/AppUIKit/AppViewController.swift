@@ -24,14 +24,23 @@ public struct UIKitAppView: UIViewControllerRepresentable {
   }
 }
 
-class AppViewController: UINavigationController {
-  let store: StoreOf<TicTacToe>
+class AppViewController: NavigationStackController {
+  var store: StoreOf<TicTacToe>!
 
-  init(store: StoreOf<TicTacToe>) {
-    self.store = store
-    super.init(nibName: nil, bundle: nil)
+  convenience init(store: StoreOf<TicTacToe>) {
+    @UIBinding var store = store
+    self.init(path: $store.scope(state: \.path, action: \.path)) {
+      UIViewController()
+    } destination: { store in
+      switch store.case {
+      case let .login(store):
+        setViewControllers([LoginViewController(store: store)], animated: false)
+      case let .newGame(store):
+        setViewControllers([NewGameViewController(store: store)], animated: false)
+      }
+    }
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
