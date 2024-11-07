@@ -14,11 +14,19 @@ struct AppFeature {
   struct State: Equatable {
     var path = StackState<Path.State>()
     var syncUpsList = SyncUpsList.State()
+    init(
+      path: StackState<Path.State> = StackState<Path.State>(),
+      syncUpsList: SyncUpsList.State = SyncUpsList.State()
+    ) {
+      self.path = StackState<Path.State>.init([.detail(.init(syncUp: Shared(SyncUp(id: .init()))))])
+      self.syncUpsList = syncUpsList
+    }
   }
 
   enum Action {
     case path(StackActionOf<Path>)
     case syncUpsList(SyncUpsList.Action)
+    case pushToStackState
   }
 
   @Dependency(\.date.now) var now
@@ -40,6 +48,13 @@ struct AppFeature {
       case .path:
         return .none
 
+      case .pushToStackState:
+        var currentPath = StackState<Path.State>()
+        var newPath = StackState<Path.State>()
+        newPath.append(.record(RecordMeeting.State(syncUp: Shared(SyncUp(id: SyncUp.ID())))))
+        state.path = newPath
+        return .none
+
       case .syncUpsList:
         return .none
       }
@@ -53,20 +68,55 @@ struct AppView: View {
   @Bindable var store: StoreOf<AppFeature>
 
   var body: some View {
-    NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-      SyncUpsListView(
-        store: store.scope(state: \.syncUpsList, action: \.syncUpsList)
-      )
+    UIViewControllerRepresenting {
+      AppController(store: store)
+    }
+  }
+}
+
+class TapViewController: UIViewController {
+  var action: (() -> Void)?
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    let gesture = UITapGestureRecognizer(target: self, action: #selector(sendAction))
+    view.addGestureRecognizer(gesture)
+  }
+
+  @objc func sendAction() {
+    action?()
+  }
+}
+
+class AppController: NavigationStackController {
+  var store: StoreOf<AppFeature>!
+
+  convenience init(store: StoreOf<AppFeature>) {
+    @UIBindable var store = store
+
+    let viewControllerGenerator: (UIColor) -> UIViewController = { color in
+      let controller = TapViewController()
+      controller.view.backgroundColor = color
+      controller.action = { [weak store] in
+        store?.send(.pushToStackState)
+      }
+      return controller
+    }
+    self.init(path: $store.scope(state: \.path, action: \.path)) {
+      viewControllerGenerator(.red)
     } destination: { store in
       switch store.case {
       case let .detail(store):
-        SyncUpDetailView(store: store)
+        viewControllerGenerator(.green)
       case let .meeting(meeting, syncUp):
-        MeetingView(meeting: meeting, syncUp: syncUp)
+        viewControllerGenerator(.blue)
       case let .record(store):
-        RecordMeetingView(store: store)
+        viewControllerGenerator(.yellow)
       }
     }
+
+    self.store = store
   }
 }
 
