@@ -28,10 +28,9 @@ enum GameType: Identifiable {
 }
 
 struct RootView: View {
-  let store = Store(initialState: TicTacToe.State.login(.init())) {
-    TicTacToe.body._printChanges()
-  }
+  let store: StoreOf<TicTacToe>
 
+  @Dependency(\.date.now) var now
   @State var showGame: GameType?
 
   var body: some View {
@@ -51,11 +50,13 @@ struct RootView: View {
           UIKitAppView(store: store)
         }
       }
-      .navigationTitle("Tic-Tac-Toe")
+      .navigationTitle("Tic-Tac-Toe: \(now.description)")
     }
   }
 }
 
 #Preview {
-  RootView()
+  RootView(store: Store(initialState: TicTacToe.State.login(.init())) {
+    TicTacToe.body._printChanges()
+  })
 }

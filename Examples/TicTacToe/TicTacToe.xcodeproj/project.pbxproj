@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CA0A5766242AA3A800BA537D /* TicTacToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0A5765242AA3A800BA537D /* TicTacToeApp.swift */; };
+		08F615A82D06100F00110369 /* TicTacToeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F615A72D06100900110369 /* TicTacToeApp.swift */; };
 		CA0A576A242AA3A900BA537D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5769242AA3A900BA537D /* Assets.xcassets */; };
 		CA0A579F242AA7F800BA537D /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0A579E242AA7F800BA537D /* RootView.swift */; };
 		DCB9EA0126B20D4B00497C03 /* AppSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = DCB9EA0026B20D4B00497C03 /* AppSwiftUI */; };
@@ -16,8 +16,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08F615A72D06100900110369 /* TicTacToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeApp.swift; sourceTree = "<group>"; };
+		08F615A92D0611A300110369 /* TicTacToe-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "TicTacToe-Info.plist"; sourceTree = "<group>"; };
 		CA0A5761242AA3A800BA537D /* TicTacToe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA0A5765242AA3A800BA537D /* TicTacToeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeApp.swift; sourceTree = "<group>"; };
 		CA0A5769242AA3A900BA537D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA0A579E242AA7F800BA537D /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DCB9E9FD26B207CD00497C03 /* tic-tac-toe */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "tic-tac-toe"; sourceTree = "<group>"; };
@@ -42,7 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				CA0A579E242AA7F800BA537D /* RootView.swift */,
-				CA0A5765242AA3A800BA537D /* TicTacToeApp.swift */,
+				08F615A72D06100900110369 /* TicTacToeApp.swift */,
 				CA0A5769242AA3A900BA537D /* Assets.xcassets */,
 			);
 			path = App;
@@ -51,6 +52,7 @@
 		DC9193ED2420104100A5BE1F = {
 			isa = PBXGroup;
 			children = (
+				08F615A92D0611A300110369 /* TicTacToe-Info.plist */,
 				DCB9E9FD26B207CD00497C03 /* tic-tac-toe */,
 				DCB9EA3D26B2188200497C03 /* README.md */,
 				CA6AC25C2450FDB800C71CB3 /* App */,
@@ -143,8 +145,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA0A5766242AA3A800BA537D /* TicTacToeApp.swift in Sources */,
 				CA0A579F242AA7F800BA537D /* RootView.swift in Sources */,
+				08F615A82D06100F00110369 /* TicTacToeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,8 +160,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "TicTacToe-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -182,8 +184,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "TicTacToe-Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
