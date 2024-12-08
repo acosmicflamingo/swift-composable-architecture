@@ -9,8 +9,6 @@ import UIKitNavigation
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   let store = Store(initialState: TicTacToe.State.login(.init())) {
     TicTacToe.body._printChanges()
-  } withDependencies: {
-    $0.date.now = Date(timeIntervalSince1970: 0.0)
   }
 
   var window: UIWindow?
@@ -78,6 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     // Override point for customization after application launch.
+    prepareDependencies {
+      $0.date.now = Date(timeIntervalSince1970: 0.0)
+    }
     return true
   }
 
